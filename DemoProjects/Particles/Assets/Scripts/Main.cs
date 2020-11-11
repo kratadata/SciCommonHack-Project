@@ -5,7 +5,7 @@ using UnityEngine;
 public class Particle
 {
     public GameObject gameObj;
-    private const float superposOffset = 0.4f;
+    private const float superposOffset = 0.15f;
 
     // copy constructor
     public Particle(Particle original)
@@ -13,31 +13,39 @@ public class Particle
         gameObj = GameObject.Instantiate(original.gameObj);
     }
 
-    // constructor
-    public Particle(GameObject prefab, String name, float rot, bool isSuper = false)
+    // constructors
+    public Particle(GameObject prefab, ID id, Color color) :
+        this(prefab, types[id].name, types[id].angle, types[id].isSuper, color)
+    {
+    }
+
+    public Particle(GameObject prefab, String name, float rot, bool isSuper, Color color)
     {
         // create regular or superposition particle
         if (isSuper)
         {
             GameObject obj1 = GameObject.Instantiate(prefab);
             obj1.name = "p1";
-            obj1.transform.Rotate(0, 0, rot);
-            obj1.transform.Translate(superposOffset, 0, 0);
+            obj1.transform.Translate(0, superposOffset, 0);
+            obj1.transform.GetComponent<Renderer>().material.color = color;
 
             GameObject obj2 = GameObject.Instantiate(prefab);
             obj2.name = "p2";
-            obj2.transform.Rotate(0, 0, rot + 180f);
-            obj2.transform.Translate(-superposOffset, 0, 0);
+            obj2.transform.Translate(0, -superposOffset, 0);
+            obj2.transform.Rotate(0, 0, 180f);
+            obj2.transform.GetComponent<Renderer>().material.color = Color.white - color;
 
             // make the two objs children of the generic GameObject
             gameObj = new GameObject();
             obj1.transform.parent = gameObj.transform;
             obj2.transform.parent = gameObj.transform;
+            gameObj.transform.Rotate(0, 0, rot);
         }
         else
         {
             gameObj = GameObject.Instantiate(prefab);
             gameObj.transform.Rotate(0, 0, rot);
+            gameObj.transform.GetComponent<Renderer>().material.color = color;
         }
 
         // set name for hierarchy
@@ -64,43 +72,52 @@ public class Particle
     {
         gameObj.transform.Translate(x, y, 3);
     }
-}
 
+    public struct Info
+    {
+        public String  name;
+        public float   angle;
+        public bool    isSuper;
+    }
+    public enum ID : int {R, U, L, D, RL, UD};
+
+    public static Dictionary<ID, Info> types = new Dictionary<ID, Info>()
+    {
+        {ID.R,  new Info() {name = "Right",       angle = 0,      isSuper = false}},
+        {ID.U,  new Info() {name = "Up",          angle = 90,     isSuper = false}},
+        {ID.L,  new Info() {name = "Left",        angle = 180,    isSuper = false}},
+        {ID.D,  new Info() {name = "Down",        angle = 270,    isSuper = false}},
+        {ID.RL, new Info() {name = "RightLeft",   angle = 0,      isSuper = true}},
+        {ID.UD, new Info() {name = "UpDown",      angle = 90,     isSuper = true}}
+    };
+}
 
 public class Main : MonoBehaviour
 {
     public GameObject ParticlePrefab;
 
-    Dictionary<String, Particle> particleTypes = new Dictionary<string, Particle>();
     List<Particle> particles = new List<Particle>();
 
     // Start is called before the first frame update
     void Start()
     {
-        // create dictionary of particle types
-        particleTypes.Add("R", new Particle(ParticlePrefab, "Right", 0));
-        particleTypes.Add("U", new Particle(ParticlePrefab, "Up", 90));
-        particleTypes.Add("L", new Particle(ParticlePrefab, "Left", 180));
-        particleTypes.Add("D", new Particle(ParticlePrefab, "Down", 270));
-        particleTypes.Add("RL", new Particle(ParticlePrefab, "RightLeft", 0, true));
-        particleTypes.Add("UD", new Particle(ParticlePrefab, "UpDown", 180, true));
-
         Test();
     }
 
     void Test()
     {
-        String[] typeNames = {"R", "U", "L", "D", "RL", "UD"};
         Color[] colorList = {Color.red, Color.blue, Color.green, Color.cyan, Color.magenta, Color.yellow};
         System.Random rnd = new System.Random();
+        int numIDs = Enum.GetNames(typeof(Particle.ID)).Length;
+        int numColors = colorList.Length;
+        const int spread = 12;
 
-        for (int i = 0; i < 20; ++i)
+
+        for (int i = 0; i < 12; ++i)
         {
-            String rndTypeName = typeNames[rnd.Next(6)];
-            Particle rndParticle = new Particle(particleTypes[rndTypeName]);
-            particles.Add(rndParticle);
-            rndParticle.SetColor(colorList[rnd.Next(6)]);
-            rndParticle.MoveTo(rnd.Next(10) - 5, rnd.Next(10) - 5);
+            particles.Add(new Particle(ParticlePrefab, (Particle.ID) rnd.Next(numIDs), colorList[rnd.Next(numColors)]));
+            //particles.Add(new Particle(ParticlePrefab, (Particle.ID) rnd.Next(numIDs), new Color((float) rnd.NextDouble(), (float) rnd.NextDouble(), (float) rnd.NextDouble())));
+            particles[i].MoveTo(rnd.Next(spread) - spread / 2, rnd.Next(spread) - spread / 2);
         }
     }
 }
