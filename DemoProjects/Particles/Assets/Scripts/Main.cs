@@ -95,22 +95,18 @@ public class Particle
 public class Main : MonoBehaviour
 {
     public GameObject ParticlePrefab;
-
+    public AudioSource bonk;
     List<Particle> particles = new List<Particle>();
 
     // Start is called before the first frame update
     void Start()
     {
-        Test();
-    }
-
-    void Test()
-    {
+        bonk = GetComponent<AudioSource>();
         Color[] colorList = {Color.red, Color.blue, Color.green, Color.cyan, Color.magenta, Color.yellow};
         System.Random rnd = new System.Random();
         int numIDs = Enum.GetNames(typeof(Particle.ID)).Length;
         int numColors = colorList.Length;
-        const int spread = 12;
+        const int spread = 8;
 
 
         for (int i = 0; i < 12; ++i)
@@ -119,6 +115,12 @@ public class Main : MonoBehaviour
             //particles.Add(new Particle(ParticlePrefab, (Particle.ID) rnd.Next(numIDs), new Color((float) rnd.NextDouble(), (float) rnd.NextDouble(), (float) rnd.NextDouble())));
             particles[i].MoveTo(rnd.Next(spread) - spread / 2, rnd.Next(spread) - spread / 2);
         }
+    }
+
+
+    public void EntangleClicked()
+    {
+        bonk.Play();
     }
 }
 
