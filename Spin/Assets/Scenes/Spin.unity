@@ -387,7 +387,7 @@ MonoBehaviour:
   autoLoadOnStart: 1
   objectsList:
   - name: teapot
-    path: http://mlsoft.web.cern.ch/FBX/teapot.obj
+    path: https://phys.cam/qa/teapot.obj
     skip: 0
     loaderOptions:
       zUp: 0
@@ -405,7 +405,7 @@ MonoBehaviour:
       localEulerAngles: {x: 0, y: 0, z: 0}
       localScale: {x: 1, y: 1, z: 1}
   - name: teddy
-    path: http://mlsoft.web.cern.ch/FBX/teddy.obj
+    path: https://phys.cam/qa/teddy.obj
     skip: 0
     loaderOptions:
       zUp: 0
@@ -423,7 +423,7 @@ MonoBehaviour:
       localEulerAngles: {x: 0, y: 0, z: 0}
       localScale: {x: 1, y: 1, z: 1}
   - name: cow
-    path: http://mlsoft.web.cern.ch/FBX/cow.obj
+    path: https://phys.cam/qa/cow.obj
     skip: 0
     loaderOptions:
       zUp: 0
