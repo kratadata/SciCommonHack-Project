@@ -5,6 +5,7 @@ using UnityEngine;
 public class CEO : MonoBehaviour
 {
     private DragParticle currentDragParticle = null;
+    private DragBranch currentDragBranch = null;
 
     protected static CEO instance = null;
 
@@ -41,6 +42,12 @@ public class CEO : MonoBehaviour
         br.SetTargetRotation(rotation);
 
     }
+
+    public void SetCurrentDragBranch(DragBranch pc)
+    {
+        currentDragBranch = pc;
+    }
+
 
     public void SetCurrentDragParticle(DragParticle pc)
     {
