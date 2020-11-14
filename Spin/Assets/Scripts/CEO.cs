@@ -10,6 +10,8 @@ public class CEO : MonoBehaviour
     protected static CEO instance = null;
 
     public GameObject branch;
+    public GameObject hangingBranch;
+    int i = 7;
 
     public Physics Score;
 
@@ -28,22 +30,31 @@ public class CEO : MonoBehaviour
     }
     void Start ()
     {
-        InstantiateBranch(Vector3.zero, Random.Range(-9f, 9f));
+        InstantiateBranch(Vector3.zero, Random.Range(-20f, 20f), 10);
+        
+
     }
 
     public void CallForSpawn(Vector3 pos)
     {
-        InstantiateBranch(pos  + new Vector3 (0f, -2f, 0f), Random.Range(-90f, 90f));
         
+        if( i > 1) { 
+        InstantiateBranch(pos + new Vector3(CEO.Instance.GetCurrentDragParticle().GetPosition().x, -2f, 0f), Random.Range(-20f, 20f), i);
+        InstantiateBranch(pos + new Vector3(-CEO.Instance.GetCurrentDragParticle().GetPosition().x, -2f, 0f), Random.Range(-20f, 20f), i);
+        
+        }
+        i = i - 1;
 
-    } 
+    }
+  
 
-    private void InstantiateBranch(Vector3 branchPos, float rotation)
+    private void InstantiateBranch(Vector3 branchPos, float rotation, int scale)
     {
         Branch br = Instantiate(branch, branchPos, Quaternion.identity).GetComponent<Branch>();
         br.SetTargetRotation(rotation);
-
+        br.SetTargetScale(scale);
     }
+
 
     public void SetCurrentDragBranch(DragBranch pc)
     {

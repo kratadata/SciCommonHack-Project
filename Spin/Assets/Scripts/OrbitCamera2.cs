@@ -21,13 +21,15 @@ public class OrbitCamera2 : MonoBehaviour
   private float _y = 0.0f;
   private Vector3 velocity = Vector3.zero;
   private Vector3 newPos = new Vector3(8f, 8f, 16f);
+  private Quaternion startRotation;
+  private Quaternion currentRotation;
   private GameObject actualTarget;
   private TargetBehaviour trg;
   private bool lockedRotation = false;
-  private bool rotated = false;
 
-  private float minPitch = -30f;
-  private float maxPitch = 30f;
+
+    public float minPitch = -30f;
+    public float maxPitch = 30f;
 
 
   private Vector3 _distanceVector;
@@ -37,6 +39,7 @@ public class OrbitCamera2 : MonoBehaviour
     _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
 
     transform.position = newPos;
+    startRotation = transform.rotation;
 
     actualTarget = new GameObject("Target");
     actualTarget.transform.position = _target.position;
@@ -51,7 +54,7 @@ public class OrbitCamera2 : MonoBehaviour
      */
     void LateUpdate()
   {
-      
+        currentRotation = transform.rotation;
 
         if ( _target && actualTarget)
     {
@@ -65,14 +68,12 @@ public class OrbitCamera2 : MonoBehaviour
       transform.position = Vector3.SmoothDamp(transform.position, newPos, ref velocity, 0.2f);
       transform.LookAt(actualTarget.transform);
     }
-      if (rotated) { 
-                float currentX = transform.rotation.x;
-                float currentY = transform.rotation.y;
-                float currentDistance = _distance;
-                GoToRotationDistanceSmooth(currentX, currentY, currentDistance, 10.0f);
-                
+           
+      if (currentRotation != startRotation)
+        {
+            Invoke("GoToTargetRotation", 3.0f);
         }
-        
+        startRotation = currentRotation;
     }
 
   /**
@@ -129,13 +130,12 @@ public class OrbitCamera2 : MonoBehaviour
     void Rotate( float x, float y )
   {
         //Transform angle in degree in quaternion form used by Unity for rotation.
-    rotated = true;
 
     y = Mathf.Clamp(y, minPitch, maxPitch);
     x = Mathf.Clamp(x, minPitch, maxPitch);
     Quaternion rotation = Quaternion.Euler(y, x, 0.0f);
 
-    newPos = rotation * _distanceVector + actualTarget.transform.position;
+    newPos = rotation * _distanceVector  + actualTarget.transform.position;
     }
 
     private void ChangeTargetPosition(Vector3 tPos)
@@ -229,11 +229,12 @@ public class OrbitCamera2 : MonoBehaviour
     _x = 0f;
     _y = 0f;
     _distance = 20f;
-    _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
+    _distanceVector = new Vector3(Mathf.Lerp(10.0f, 0.0f, 20.0f), Mathf.Lerp(10.0f, 0.0f, 20.0f), -_distance);
     Rotate(_x, _y);
-  }
+     CancelInvoke("GoToTargetRotation");
+    }
 
-    public void GoToRotationDistanceSmooth(float x, float y, float distance, float time) {
+ public void GoToRotationDistanceSmooth(float x, float y, float distance, float time) {
  
      StartCoroutine(IGoToRotationDistanceSmooth(x, y, distance, time));
     
@@ -255,7 +256,7 @@ public class OrbitCamera2 : MonoBehaviour
         _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
         Rotate(_x, _y);
       }
-        rotated = false;
+        
         yield return null;
   }
 

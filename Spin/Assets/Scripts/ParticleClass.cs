@@ -30,7 +30,6 @@ public class ParticleClass : MonoBehaviour
 public struct Properties
 {
     public float spin;
-    public float potato;
-    public bool isBornOnFriday;
+    
 
 }
