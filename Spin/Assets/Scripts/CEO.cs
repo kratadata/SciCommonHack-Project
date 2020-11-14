@@ -5,12 +5,15 @@ using UnityEngine;
 public class CEO : MonoBehaviour
 {
     private DragParticle currentDragParticle = null;
+    private DragBranch currentDragBranch = null;
 
     protected static CEO instance = null;
 
     public GameObject branch;
     public GameObject hangingBranch;
     int i = 7;
+
+    public Physics Score;
 
     public static CEO Instance
     {
@@ -27,8 +30,12 @@ public class CEO : MonoBehaviour
     }
     void Start ()
     {
+<<<<<<< HEAD
         InstantiateBranch(Vector3.zero, Random.Range(-20f, 20f), 10);
 
+=======
+        InstantiateBranch(Vector3.zero, Random.Range(-9f, 9f));
+>>>>>>> main
     }
 
     public void CallForSpawn(Vector3 pos)
@@ -56,6 +63,12 @@ public class CEO : MonoBehaviour
         HangingBranch Hbr = Instantiate(hangingBranch, branchPos, Quaternion.identity).GetComponent<HangingBranch>();
         Hbr.SetTargetRotationHorizontal(rotation);
     }
+
+    public void SetCurrentDragBranch(DragBranch pc)
+    {
+        currentDragBranch = pc;
+    }
+
 
     public void SetCurrentDragParticle(DragParticle pc)
     {
