@@ -175,6 +175,8 @@ MonoBehaviour:
   _zoomStep: 1
   _xSpeed: 1
   _ySpeed: 1
+  minPitch: -30
+  maxPitch: 30
 --- !u!20 &132165000
 Camera:
   m_ObjectHideFlags: 0
@@ -386,7 +388,7 @@ MonoBehaviour:
   importAssetPath: _ImportedOBJ
   autoLoadOnStart: 1
   objectsList:
-  - name: teapot
+  - name: superpositon
     path: https://phys.cam/qa/teapot.obj
     skip: 0
     loaderOptions:
@@ -402,9 +404,9 @@ MonoBehaviour:
       use32bitIndices: 1
       hideWhileLoading: 0
       localPosition: {x: 0, y: -8, z: 0}
-      localEulerAngles: {x: 0, y: 0, z: 0}
+      localEulerAngles: {x: 0, y: -90, z: 0}
       localScale: {x: 1, y: 1, z: 1}
-  - name: teddy
+  - name: spinLeft
     path: https://phys.cam/qa/teddy.obj
     skip: 0
     loaderOptions:
@@ -420,9 +422,9 @@ MonoBehaviour:
       use32bitIndices: 0
       hideWhileLoading: 0
       localPosition: {x: 6, y: -8, z: 0}
-      localEulerAngles: {x: 0, y: 0, z: 0}
+      localEulerAngles: {x: 0, y: 0, z: 90}
       localScale: {x: 1, y: 1, z: 1}
-  - name: cow
+  - name: spinRight
     path: https://phys.cam/qa/cow.obj
     skip: 0
     loaderOptions:
@@ -557,6 +559,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   branch: {fileID: 2339769114886892366, guid: 0958856d6e4e5df4ca124f0c9aae4caf, type: 3}
+  hangingBranch: {fileID: 2339769114886892366, guid: eebfb0e8d42d79d43be3852378db7aac,
+    type: 3}
 --- !u!1 &507591660
 GameObject:
   m_ObjectHideFlags: 0

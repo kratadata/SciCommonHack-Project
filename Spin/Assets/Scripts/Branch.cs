@@ -7,17 +7,28 @@ public class Branch : MonoBehaviour
     public Arm arm1;
     public Arm arm2;
 
+    public Rope ropeR;
+    public Rope ropeL;
+
     private bool calledAction = false;
     private float smooth = 1f;
     Quaternion target;
+    Vector3 scaled;
 
     void Start()
     {
-        
+    
     }
+
     public void SetTargetRotation(float targetRot)
     {
-        target = Quaternion.Euler(0f, targetRot, 0);
+        target = Quaternion.Euler(targetRot, 0, 0);
+    }
+
+
+    public void SetTargetScale(float targetScale)
+    {
+        transform.localScale = new Vector3(targetScale, 0.1f, 0.1f);
     }
 
     public void Action()
