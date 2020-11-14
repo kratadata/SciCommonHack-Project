@@ -386,8 +386,8 @@ MonoBehaviour:
   importAssetPath: _ImportedOBJ
   autoLoadOnStart: 1
   objectsList:
-  - name: teapot
-    path: https://phys.cam/qa/teapot.obj
+  - name: spinleft
+    path: https://phys.cam/qa/spinleft.obj
     skip: 0
     loaderOptions:
       zUp: 0
