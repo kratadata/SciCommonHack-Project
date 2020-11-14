@@ -11,6 +11,8 @@ public class CEO : MonoBehaviour
 
     public GameObject branch;
 
+    public Physics Score;
+
     public static CEO Instance
     {
         get
@@ -26,7 +28,7 @@ public class CEO : MonoBehaviour
     }
     void Start ()
     {
-        InstantiateBranch(Vector3.zero, Random.Range(-90f, 90f));
+        InstantiateBranch(Vector3.zero, Random.Range(-9f, 9f));
     }
 
     public void CallForSpawn(Vector3 pos)

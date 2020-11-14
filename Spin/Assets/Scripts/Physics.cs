@@ -9,6 +9,7 @@ public class Physics : MonoBehaviour
 
     public static void IncreaseScore(){
         Score = Score + 1;
+        Debug.Log('h');
 
     }
     public void SetScoreText(){

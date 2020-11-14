@@ -88,13 +88,13 @@ public class DragParticle : MonoBehaviour
         {
             SnappingMovement ();
             float dist = (transform.parent.position - lockPosition).magnitude;
-            if (dist <= 0.02f)
+            if (dist <= 1f)
             {
                 isLocking = false;
                 transform.parent.position = lockPosition;
                 mat.color = snappedColor;
                 pc.Respawn();
-
+                Physics.IncreaseScore();
             }
 
         }
