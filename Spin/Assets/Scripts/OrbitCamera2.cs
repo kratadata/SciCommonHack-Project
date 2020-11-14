@@ -13,7 +13,6 @@ public class OrbitCamera2 : MonoBehaviour
 
   public float _zoomStep = 1.0f;
 
-
   public float _xSpeed = 1f;
   public float _ySpeed = 1f;
 
@@ -25,8 +24,10 @@ public class OrbitCamera2 : MonoBehaviour
   private GameObject actualTarget;
   private TargetBehaviour trg;
   private bool lockedRotation = false;
+  private bool rotated = false;
 
-
+  private float minPitch = -30f;
+  private float maxPitch = 30f;
 
 
   private Vector3 _distanceVector;
@@ -37,21 +38,22 @@ public class OrbitCamera2 : MonoBehaviour
 
     transform.position = newPos;
 
-
     actualTarget = new GameObject("Target");
     actualTarget.transform.position = _target.position;
     trg = actualTarget.AddComponent<TargetBehaviour>();
     trg.orb = this;
     this.Rotate(_x, _y);
+   
+    }
 
-  }
-
-  /**
-   * Rotate the camera or zoom depending on the input of the player.
-   */
-  void LateUpdate()
+    /**
+     * Rotate the camera or zoom depending on the input of the player.
+     */
+    void LateUpdate()
   {
-    if ( _target && actualTarget)
+      
+
+        if ( _target && actualTarget)
     {
       if (!lockedRotation)
       {
@@ -63,8 +65,15 @@ public class OrbitCamera2 : MonoBehaviour
       transform.position = Vector3.SmoothDamp(transform.position, newPos, ref velocity, 0.2f);
       transform.LookAt(actualTarget.transform);
     }
-
-  }
+      if (rotated) { 
+                float currentX = transform.rotation.x;
+                float currentY = transform.rotation.y;
+                float currentDistance = _distance;
+                GoToRotationDistanceSmooth(currentX, currentY, currentDistance, 10.0f);
+                
+        }
+        
+    }
 
   /**
    * Rotate the camera when the first button of the mouse is pressed.
@@ -78,54 +87,58 @@ public class OrbitCamera2 : MonoBehaviour
       _y += -Input.GetAxis("Mouse Y") * _ySpeed;
 
       this.Rotate(_x, _y);
-    }
+           
+     }
 
     if (Input.GetKey("d"))
     {
       _x -= Time.deltaTime * _xSpeed * 16f;
       this.Rotate(_x, _y);
+           
     }
 
     if (Input.GetKey("a"))
     {
       _x += Time.deltaTime * _xSpeed * 16f;
       this.Rotate(_x, _y);
-    }
+            
+        }
 
     if (Input.GetKey("s"))
     {
       _y -= Time.deltaTime * _ySpeed * 16f;
       this.Rotate(_x, _y);
-    }
+         
+        }
 
     if (Input.GetKey("w"))
     {
       _y += Time.deltaTime * _ySpeed * 16f;
       this.Rotate(_x, _y);
-    }
+            
+        }
 
     if (Input.GetKey("."))
     {
       GoToTargetRotation();
-    }
+           
+        }
 
   }
 
-
-  void Rotate( float x, float y )
+    void Rotate( float x, float y )
   {
-    //Transform angle in degree in quaternion form used by Unity for rotation.
+        //Transform angle in degree in quaternion form used by Unity for rotation.
+    rotated = true;
+
+    y = Mathf.Clamp(y, minPitch, maxPitch);
+    x = Mathf.Clamp(x, minPitch, maxPitch);
     Quaternion rotation = Quaternion.Euler(y, x, 0.0f);
 
-
     newPos = rotation * _distanceVector + actualTarget.transform.position;
+    }
 
-
-    //transform.rotation = rotation;
-    //transform.position = newPos;
-  }
-
-  private void ChangeTargetPosition(Vector3 tPos)
+    private void ChangeTargetPosition(Vector3 tPos)
   {
     trg.GoToPosSmooth(tPos);
   }
@@ -135,13 +148,14 @@ public class OrbitCamera2 : MonoBehaviour
     _distance = Vector3.Magnitude(newTargetPos - transform.position);
   }
 
-
-  void Zoom()
+    void Zoom()
   {
     if ( Input.GetAxis("Mouse ScrollWheel") < 0.0f )
     {
+
       this.ZoomOut();
-    }
+            
+        }
     else if ( Input.GetAxis("Mouse ScrollWheel") > 0.0f )
     {
       this.ZoomIn();
@@ -167,16 +181,21 @@ public class OrbitCamera2 : MonoBehaviour
    */
   void ZoomIn()
   {
+    if (_distance > 10.0f) { 
     _distance -= _zoomStep;
+    
     _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
     this.Rotate(_x, _y);
-  }
+        }
+    }
 
-  void ZoomInKey()
-  {
-    _distance -= _zoomStep * Time.deltaTime * 3f;
-    _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
-    this.Rotate(_x, _y);
+    void ZoomInKey()
+    {
+        if (_distance > 10.0f) { 
+        _distance -= _zoomStep * Time.deltaTime * 3f;
+        _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
+        this.Rotate(_x, _y);
+    }
   }
 
   /**
@@ -185,17 +204,24 @@ public class OrbitCamera2 : MonoBehaviour
    */
   void ZoomOut()
   {
+    if (_distance < 30.0f) { 
     _distance += _zoomStep;
+ 
     _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
     this.Rotate(_x, _y);
-  }
+    }
+}
 
   void ZoomOutKey()
   {
-    _distance += _zoomStep * Time.deltaTime * 3f;
-    _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
-    this.Rotate(_x, _y);
-    //Debug.Log(_distance);
+    if (_distance < 30.0f)
+    {
+        _distance += _zoomStep * Time.deltaTime * 3f;
+
+        _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
+        this.Rotate(_x, _y);
+        //Debug.Log(_distance);
+    }
   }
 
   public void GoToTargetRotation()
@@ -207,14 +233,14 @@ public class OrbitCamera2 : MonoBehaviour
     Rotate(_x, _y);
   }
 
-  public void GoToRotationDistanceSmooth(float x, float y, float distance, float time)
-  {
-    StartCoroutine(IGoToRotationDistanceSmooth(x, y, distance, time));
+    public void GoToRotationDistanceSmooth(float x, float y, float distance, float time) {
+ 
+     StartCoroutine(IGoToRotationDistanceSmooth(x, y, distance, time));
+    
   }
 
   IEnumerator IGoToRotationDistanceSmooth(float x, float y, float distance, float aTime)
   {
-
 
     float origX = _x - 360f;
     float origY = _y;
@@ -222,26 +248,15 @@ public class OrbitCamera2 : MonoBehaviour
 
     for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
     {
-      if (!lockedRotation)
-      {
-        _x = Mathf.SmoothStep(origX, x, t);
-        _y = Mathf.SmoothStep(origY, y, t);
-        _distance = Mathf.SmoothStep(origDist, distance, t);
+   
+        _x = Mathf.SmoothStep(origX , x, t);
+        _y = Mathf.SmoothStep(origY,  y, t);
+        _distance = Mathf.SmoothStep(distance, 20.0f, t);
         _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
         Rotate(_x, _y);
       }
-      yield return null;
-    }
-
-    if (!lockedRotation)
-    {
-      _x = x;
-      _y = y;
-      _distance = distance;
-      _distanceVector = new Vector3(0.0f, 0.0f, -_distance);
-      Rotate(_x, _y);
-    }
-
+        rotated = false;
+        yield return null;
   }
 
   public void SetLockRotation(bool lr)
