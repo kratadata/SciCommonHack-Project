@@ -9,15 +9,18 @@ public class DragParticle : MonoBehaviour
     Vector3 dist;
     float posx;
     float posy;
+    float posz;
     private bool isFree = true;
     private bool isLocking = false;
     private Vector3 lockPosition = Vector3.zero;
     private Material mat;
-    private float snapDistance = 0.6f;
+    private float snapDistance = 2f;
     private Color freeColor = Color.red;
     private Color snappedColor = Color.green;
     private ParticleClass pc;
     public Texture particleTexture;
+
+    private Properties particle;
 
     void Start ()
     {
@@ -28,6 +31,8 @@ public class DragParticle : MonoBehaviour
 
         StartCoroutine(GetTexture());
         mat.mainTexture = particleTexture;
+        mat.color = freeColor;
+        particle = new Properties();
     }
 
     public void SetParticleClass(ParticleClass paclass)
@@ -42,6 +47,7 @@ public class DragParticle : MonoBehaviour
             dist = Camera.main.WorldToScreenPoint (transform.position);
             posx = Input.mousePosition.x - dist.x;
             posy = Input.mousePosition.y - dist.y;
+            
         }
     }
 
@@ -49,10 +55,12 @@ public class DragParticle : MonoBehaviour
     {
         if (isFree)
         {
+           
             Vector3 curPos = new Vector3 (Input.mousePosition.x - posx, Input.mousePosition.y - posy, dist.z);
             Vector3 worldPos = Camera.main.ScreenToWorldPoint (curPos);
-
+            worldPos.z = Mathf.Clamp(worldPos.z, 1.0f, -1.0f);
             transform.parent.position = worldPos;
+            
             CEO.Instance.SetCurrentDragParticle (this);
         }
     }

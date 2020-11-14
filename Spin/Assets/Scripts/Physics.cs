@@ -9,7 +9,6 @@ public class Physics : MonoBehaviour
 
     public static void IncreaseScore(){
         Score = Score + 1;
-
     }
     public void SetScoreText(){
         

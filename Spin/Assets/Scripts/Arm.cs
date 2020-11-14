@@ -9,7 +9,7 @@ public class Arm : MonoBehaviour
 
     private ParticleClass pc = null;
 
-    private float snappingDist = 1f;
+    private float snappingDist = 1.5f;
 
     void Start ()
     {
@@ -41,7 +41,7 @@ public class Arm : MonoBehaviour
             float dist = (CEO.Instance.GetCurrentDragParticle ().GetPosition () - transform.position).magnitude;
             if (dist <= snappingDist) 
             {
-                CEO.Instance.GetCurrentDragParticle (). LockAtPosition (transform.position);
+                CEO.Instance.GetCurrentDragParticle(). LockAtPosition (transform.position);
                 isFilled = true;
                 SetParticleClass(CEO.Instance.GetCurrentDragParticle ());
                 //Debug.Log(isFilled);
