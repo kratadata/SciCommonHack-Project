@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class DragParticle : MonoBehaviour
 {
@@ -16,11 +17,17 @@ public class DragParticle : MonoBehaviour
     private Color freeColor = Color.red;
     private Color snappedColor = Color.green;
     private ParticleClass pc;
+    public Texture particleTexture;
 
     void Start ()
     {
         mat = gameObject.GetComponent<Renderer> ().material;
-        mat.color = freeColor;
+        //mat.color = freeColor;
+
+
+
+        StartCoroutine(GetTexture());
+        mat.mainTexture = particleTexture;
     }
 
     public void SetParticleClass(ParticleClass paclass)
@@ -84,11 +91,16 @@ public class DragParticle : MonoBehaviour
 
     void Update ()
     {
+
+        GetTexture();
+        mat.mainTexture = particleTexture;
+
+
         if (isLocking)
         {
             SnappingMovement ();
             float dist = (transform.parent.position - lockPosition).magnitude;
-            if (dist <= 1f)
+            if (dist <= 0.1f)
             {
                 isLocking = false;
                 transform.parent.position = lockPosition;
@@ -100,5 +112,22 @@ public class DragParticle : MonoBehaviour
         }
 
     }
+
+    IEnumerator GetTexture()
+    {
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture("http://phys.cam/qa/texparticle.png");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            particleTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+        }
+
+    }
+
 
 }
