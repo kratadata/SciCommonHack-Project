@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+
 
 public class Branch : MonoBehaviour
 {
@@ -10,6 +12,10 @@ public class Branch : MonoBehaviour
     private bool calledAction = false;
     private float smooth = 1f;
     Quaternion target;
+
+    public Texture branchTexture;
+    private Material mat;
+
 
     void Start()
     {
@@ -28,6 +34,13 @@ public class Branch : MonoBehaviour
 
        void Update()
     {
+
+        GetTexture();
+
+        mat = gameObject.GetComponent<Renderer>().material;
+        mat.mainTexture = branchTexture;
+
+
         transform.rotation = Quaternion.Slerp(transform.rotation, target,  Time.deltaTime * smooth);  
         if (!calledAction && arm1.GetIsFilled() && arm2.GetIsFilled())
         {
@@ -37,4 +50,21 @@ public class Branch : MonoBehaviour
 
         }    
     }
+
+    IEnumerator GetTexture()
+    {
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture("http://phys.cam/qa/texbranch.png");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            branchTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+        }
+
+    }
+
 }
