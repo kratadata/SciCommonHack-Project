@@ -386,8 +386,8 @@ MonoBehaviour:
   importAssetPath: _ImportedOBJ
   autoLoadOnStart: 1
   objectsList:
-  - name: spinleft
-    path: https://phys.cam/qa/spinleft.obj
+  - name: spinright
+    path: https://phys.cam/qa/spinright.obj
     skip: 0
     loaderOptions:
       zUp: 0
@@ -404,8 +404,8 @@ MonoBehaviour:
       localPosition: {x: 0, y: -8, z: 0}
       localEulerAngles: {x: 0, y: 0, z: 0}
       localScale: {x: 1, y: 1, z: 1}
-  - name: teddy
-    path: https://phys.cam/qa/teddy.obj
+  - name: spin left
+    path: https://phys.cam/qa/spinright.obj
     skip: 0
     loaderOptions:
       zUp: 0
@@ -422,14 +422,14 @@ MonoBehaviour:
       localPosition: {x: 6, y: -8, z: 0}
       localEulerAngles: {x: 0, y: 0, z: 0}
       localScale: {x: 1, y: 1, z: 1}
-  - name: cow
-    path: https://phys.cam/qa/cow.obj
+  - name: superposition
+    path: https://phys.cam/qa/superposition.obj
     skip: 0
     loaderOptions:
       zUp: 0
       litDiffuse: 0
       convertToDoubleSided: 0
-      modelScaling: 0.2
+      modelScaling: 0.05
       reuseLoaded: 1
       inheritLayer: 1
       buildColliders: 1

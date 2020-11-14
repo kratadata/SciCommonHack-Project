@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\DragParticle.cs" />
      <Compile Include="Assets\Scripts\OrbitCamera2.cs" />
      <Compile Include="Assets\Scripts\ParticleClass.cs" />
+     <Compile Include="Assets\Scripts\Physics.cs" />
      <Compile Include="Assets\Scripts\TargetBehaviour.cs" />
      <Compile Include="Assets\Scripts\Util\EditorLikeCameraController.cs" />
      <Compile Include="Assets\Scripts\_sImpL\Dataset\DataSet.cs" />
