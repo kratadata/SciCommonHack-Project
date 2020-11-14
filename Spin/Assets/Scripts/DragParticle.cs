@@ -95,7 +95,7 @@ public class DragParticle : MonoBehaviour
         {
             SnappingMovement ();
             float dist = (transform.parent.position - lockPosition).magnitude;
-            if (dist <= 1f)
+            if (dist <= 0.1f)
             {
                 isLocking = false;
                 transform.parent.position = lockPosition;

@@ -30,12 +30,9 @@ public class CEO : MonoBehaviour
     }
     void Start ()
     {
-<<<<<<< HEAD
         InstantiateBranch(Vector3.zero, Random.Range(-20f, 20f), 10);
+        
 
-=======
-        InstantiateBranch(Vector3.zero, Random.Range(-9f, 9f));
->>>>>>> main
     }
 
     public void CallForSpawn(Vector3 pos)
@@ -58,11 +55,6 @@ public class CEO : MonoBehaviour
         br.SetTargetScale(scale);
     }
 
-    private void InstantiateHorizontalBranch(Vector3 branchPos, float rotation)
-    {
-        HangingBranch Hbr = Instantiate(hangingBranch, branchPos, Quaternion.identity).GetComponent<HangingBranch>();
-        Hbr.SetTargetRotationHorizontal(rotation);
-    }
 
     public void SetCurrentDragBranch(DragBranch pc)
     {
