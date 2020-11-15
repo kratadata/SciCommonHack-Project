@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CEO : MonoBehaviour
 {
@@ -13,7 +14,17 @@ public class CEO : MonoBehaviour
     public GameObject hangingBranch;
     int i = 7;
 
-    public Physics Score;
+    public Text ScoreText;
+
+    public int Score = 0;
+
+    public void IncreaseScore(){
+        Score = Score + 1;
+        SetScoreText();
+    }
+     public void SetScoreText(){
+        ScoreText.text = "Score: "+Score.ToString();
+    }
 
     public static CEO Instance
     {

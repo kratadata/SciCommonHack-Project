@@ -114,7 +114,7 @@ public class DragParticle : MonoBehaviour
                 transform.parent.position = lockPosition;
                 mat.color = snappedColor;
                 pc.Respawn();
-                Physics.IncreaseScore();
+                CEO.Instance.IncreaseScore();
             }
 
         }
