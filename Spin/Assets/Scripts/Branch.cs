@@ -21,8 +21,8 @@ public class Branch : MonoBehaviour
     private Material mat;
 
 
-    public Texture branchTexture;
-    private Material mat;
+    // public Texture branchTexture;
+    // private Material mat;
 
 
     void Start()
