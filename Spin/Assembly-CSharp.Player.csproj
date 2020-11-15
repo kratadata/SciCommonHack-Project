@@ -612,9 +612,13 @@
     <Compile Include="Assets\Scripts\Branch.cs" />
     <Compile Include="Assets\Scripts\CEO.cs" />
     <Compile Include="Assets\Scripts\CustomObjImporter.cs" />
+    <Compile Include="Assets\Scripts\DragBranch.cs" />
     <Compile Include="Assets\Scripts\DragParticle.cs" />
+    <Compile Include="Assets\Scripts\HangingBranch.cs" />
     <Compile Include="Assets\Scripts\OrbitCamera2.cs" />
     <Compile Include="Assets\Scripts\ParticleClass.cs" />
+    <Compile Include="Assets\Scripts\Physics.cs" />
+    <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\TargetBehaviour.cs" />
     <Compile Include="Assets\Scripts\Util\EditorLikeCameraController.cs" />
     <Compile Include="Assets\Scripts\_sImpL\Dataset\DataSet.cs" />

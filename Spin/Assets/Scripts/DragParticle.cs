@@ -15,25 +15,43 @@ public class DragParticle : MonoBehaviour
     private Vector3 lockPosition = Vector3.zero;
     private Material mat;
     private float snapDistance = 2f;
-    private Color freeColor = Color.red;
-    private Color snappedColor = Color.green;
+    private Color freeColor = Color.blue;
+    private Color snappedColor = Color.red;
     private ParticleClass pc;
     public Texture particleTexture;
 
     private Properties particle;
 
-    void Start ()
+    void Start()
     {
-        mat = gameObject.GetComponent<Renderer> ().material;
-        //mat.color = freeColor;
+        mat = gameObject.GetComponent<MeshRenderer>().material;
 
 
+        mat.SetInt("_Shininess", 1);
 
-        StartCoroutine(GetTexture());
-        mat.mainTexture = particleTexture;
+
         mat.color = freeColor;
-        particle = new Properties();
+
+
+
+        //StartCoroutine(GetTexture());
+        //mat.mainTexture = particleTexture;
+        //particle = new Properties();
+
+
     }
+
+    private void Awake()
+    {
+        mat = gameObject.GetComponent<MeshRenderer>().material;
+
+
+        mat.SetInt("_Shininess", 1);
+
+
+        mat.color = freeColor;
+    }
+
 
     public void SetParticleClass(ParticleClass paclass)
     {
@@ -100,8 +118,8 @@ public class DragParticle : MonoBehaviour
     void Update ()
     {
 
-        GetTexture();
-        mat.mainTexture = particleTexture;
+        //GetTexture();
+        //mat.mainTexture = particleTexture;
 
 
         if (isLocking)
@@ -112,7 +130,7 @@ public class DragParticle : MonoBehaviour
             {
                 isLocking = false;
                 transform.parent.position = lockPosition;
-                mat.color = snappedColor;
+                //mat.color = snappedColor;
                 pc.Respawn();
                 Physics.IncreaseScore();
             }
