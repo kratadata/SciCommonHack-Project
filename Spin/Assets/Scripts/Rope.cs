@@ -24,11 +24,12 @@ public class Rope : MonoBehaviour
     private void Update()
     {
        
-        if (rotatingSpeed.z != 0.0f)
-        {
-            angles.z = Mathf.PingPong(Time.time * rotatingSpeed.z, endAngles.z) - beginAngles.z;
-            transform.RotateAround(transform.position, Vector3.up, angles.z);
-        }
+        // if (rotatingSpeed.z != 0.0f)
+        // {
+             // transform.localScale = transform.localScale;
+            // angles.z = Mathf.PingPong(Time.time * rotatingSpeed.z, endAngles.z) - beginAngles.z;
+            // transform.RotateAround(transform.position, Vector3.up, 20*Time.deltaTime);
+        // }
             //objectToRotate.eulerAngles = angles;
     }
 }
